@@ -1,0 +1,45 @@
+
+X1 =X0;
+[~, ~, ~] = size(beta);
+C = zeros(lat, lon);
+delte = [exp(-2/(year+1)) exp(2/(year+1))];
+for i = 1 : lat
+    for j = 1 : lon
+        if D(i, j) == -1
+        else
+            sum = sum+1;
+            if max(beta(i, j, :)) - min(beta(i, j, :))>delte(2) - delte(1)
+                bad_data = bad_data + 1;
+                D(i, j) = -1;
+            else
+                if max(beta(i, j, :))> delte(2) && min(beta(i, j, :))>delte(1)
+                    changed_data = changed_data + 1;
+                    D(i, j) = -1;
+                    C(i,j) = max(beta(i, j, :)) - delte(2);
+                    X0(i, j, :) = X0(i,j,:) -0*C(i, j);
+                elseif max(beta(i, j, :))< delte(2) && min(beta(i, j, :))<delte(1)
+                    changed_data = changed_data + 1;                
+                    D(i, j) = -1;
+                    C(i,j) = delte(1) - min(beta(i, j, :)) ;
+                    X0(i, j, :) = X0(i,j,:) + 0*C(i, j);
+                else
+                    D(i, j) = 0;                
+                    nochanged_data = nochanged_data + 1;
+                end
+            end
+        end
+    end
+end
+%--------------------
+bad_data
+changed_data
+nochanged_data
+lat * lon
+
+
+%                    m = find(beta(1, 1, :)==-20);
+  %                   [~, n] = size(m);
+    %                 for n = 1 : n
+      %                   X0 = pinghua(m(n));
+        %                 D(i, j) = 0;
+          %           end
